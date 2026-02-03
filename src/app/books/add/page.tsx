@@ -17,7 +17,7 @@ export default function AddBookPage() {
   const [totalCopies, setTotalCopies] = useState('1')
   const router = useRouter()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!title || !author) {
@@ -54,9 +54,10 @@ export default function AddBookPage() {
 
       // বই লিস্ট পেজে ফিরে যাও
       router.push('/books')
-    } catch (err) {
-      toast.error("এরর", { description: err.message })
-    }
+} catch (err: unknown) {
+  const errorMessage = err instanceof Error ? err.message : 'কোনো সমস্যা হয়েছে'
+  toast.error("এরর", { description: errorMessage })
+}
   }
 
   return (

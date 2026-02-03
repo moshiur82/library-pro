@@ -7,20 +7,35 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from 'next/link'
 
+// সদস্যের টাইপ ডিফাইন করলাম
+interface Member {
+  id: number
+  name: string
+  email: string
+  phone: string | null
+  address: string | null
+  join_date: string
+  created_at: string
+  updated_at: string
+}
+
 export default function MembersPage() {
-  const [members, setMembers] = useState([])
+  const [members, setMembers] = useState<Member[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
         const response = await fetch('http://localhost:5000/members')
-        if (!response.ok) throw new Error('সদস্য লিস্ট লোড করতে সমস্যা')
-        const data = await response.json()
+        if (!response.ok) {
+          throw new Error('সদস্য লিস্ট লোড করতে সমস্যা')
+        }
+
+        const data: Member[] = await response.json()
         setMembers(data)
-      } catch (err) {
-        setError(err.message)
+      } catch (err: any) {  // ← এখানে any দিয়ে সব এরর সলভ
+        setError(err?.message || 'সদস্য লিস্ট লোড করতে সমস্যা')
       } finally {
         setLoading(false)
       }
@@ -29,8 +44,13 @@ export default function MembersPage() {
     fetchMembers()
   }, [])
 
-  if (loading) return <div className="text-center p-10 text-xl text-gray-300">লোড হচ্ছে...</div>
-  if (error) return <div className="text-center p-10 text-red-500 text-xl">এরর: {error}</div>
+  if (loading) {
+    return <div className="text-center p-10 text-xl text-gray-300">লোড হচ্ছে...</div>
+  }
+
+  if (error) {
+    return <div className="text-center p-10 text-red-500 text-xl">এরর: {error}</div>
+  }
 
   return (
     <div className="space-y-6">

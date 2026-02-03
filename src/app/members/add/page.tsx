@@ -16,7 +16,7 @@ export default function AddMemberPage() {
   const [address, setAddress] = useState('')
   const router = useRouter()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!name || !email) {
@@ -46,8 +46,9 @@ export default function AddMemberPage() {
 
       // সদস্য লিস্ট পেজে ফিরে যাও
       router.push('/members')
-    } catch (err) {
-      toast.error("এরর", { description: err.message })
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'কোনো সমস্যা হয়েছে'
+      toast.error("এরর", { description: errorMessage })
     }
   }
 

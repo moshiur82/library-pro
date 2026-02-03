@@ -7,23 +7,38 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 
+// ধারের রেকর্ডের টাইপ ডিফাইন করলাম
+interface BorrowRecord {
+  id: number
+  book_title: string
+  member_name: string
+  borrow_date: string
+  due_date: string
+  status: string
+}
+
 export default function BorrowsPage() {
-  const [borrows, setBorrows] = useState([])
+  const [borrows, setBorrows] = useState<BorrowRecord[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchBorrows = async () => {
       try {
         const response = await fetch('http://localhost:5000/borrows')
-        if (!response.ok) throw new Error('ধারের লিস্ট লোড করতে সমস্যা')
-        const data = await response.json()
+        if (!response.ok) {
+          throw new Error('ধারের লিস্ট লোড করতে সমস্যা হয়েছে')
+        }
+
+        const data: BorrowRecord[] = await response.json()
+
         // শুধু active ধার দেখাবো
-        const activeBorrows = data.filter(b => b.status === 'active')
+        const activeBorrows = data.filter((b: BorrowRecord) => b.status === 'active')
         setBorrows(activeBorrows)
-      } catch (err) {
-        setError(err.message)
-        toast.error("এরর", { description: err.message })
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'ধারের লিস্ট লোড করতে সমস্যা'
+        setError(errorMessage)
+        toast.error("এরর", { description: errorMessage })
       } finally {
         setLoading(false)
       }
@@ -32,7 +47,7 @@ export default function BorrowsPage() {
     fetchBorrows()
   }, [])
 
-  const handleReturn = async (borrowId) => {
+  const handleReturn = async (borrowId: number) => {
     try {
       const response = await fetch(`http://localhost:5000/return/${borrowId}`, {
         method: 'PATCH',
@@ -46,17 +61,28 @@ export default function BorrowsPage() {
 
       toast.success("সফল!", { description: "বই ফেরত দেওয়া হয়েছে" })
 
-      // লিস্ট রিফ্রেশ
-      const updatedBorrows = await fetch('http://localhost:5000/borrows').then(res => res.json())
-      const active = updatedBorrows.filter(b => b.status === 'active')
+      // লিস্ট রিফ্রেশ করো
+      const updatedResponse = await fetch('http://localhost:5000/borrows')
+      if (!updatedResponse.ok) {
+        throw new Error('লিস্ট রিফ্রেশ করতে সমস্যা')
+      }
+
+      const updatedData: BorrowRecord[] = await updatedResponse.json()
+      const active = updatedData.filter((b: BorrowRecord) => b.status === 'active')
       setBorrows(active)
-    } catch (err) {
-      toast.error("এরর", { description: err.message })
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'কোনো সমস্যা হয়েছে'
+      toast.error("এরর", { description: errorMessage })
     }
   }
 
-  if (loading) return <div className="text-center p-10 text-xl text-gray-300">লোড হচ্ছে...</div>
-  if (error) return <div className="text-center p-10 text-red-500 text-xl">এরর: {error}</div>
+  if (loading) {
+    return <div className="text-center p-10 text-xl text-gray-300">লোড হচ্ছে...</div>
+  }
+
+  if (error) {
+    return <div className="text-center p-10 text-red-500 text-xl">এরর: {error}</div>
+  }
 
   return (
     <div className="space-y-6">
