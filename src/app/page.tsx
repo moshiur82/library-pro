@@ -19,9 +19,9 @@ export default function Dashboard() {
     const fetchStats = async () => {
       try {
         const [booksRes, membersRes, borrowsRes] = await Promise.all([
-          fetch('https://https://library-pro-backend-production.up.railway.app/books'),
-          fetch('https://https://library-pro-backend-production.up.railway.app/members'),
-          fetch('https://https://library-pro-backend-production.up.railway.app/borrows')
+          fetch('https://library-pro-backend-production.up.railway.app/books'),
+          fetch('https://library-pro-backend-production.up.railway.app/members'),
+          fetch('https://library-pro-backend-production.up.railway.app/borrows')
         ])
 
         const books = await booksRes.json()

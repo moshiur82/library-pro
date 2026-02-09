@@ -27,7 +27,7 @@ export default function MembersPage() {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await fetch('https://https://library-pro-backend-production.up.railway.app/members')
+        const response = await fetch('https://library-pro-backend-production.up.railway.app/members')
         if (!response.ok) {
           throw new Error('সদস্য লিস্ট লোড করতে সমস্যা')
         }

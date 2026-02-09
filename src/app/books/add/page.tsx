@@ -26,7 +26,7 @@ export default function AddBookPage() {
     }
 
     try {
-      const response = await fetch('https://https://library-pro-backend-production.up.railway.app/books', {
+      const response = await fetch('https://library-pro-backend-production.up.railway.app/books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -15,7 +15,7 @@ export default function ReturnPage() {
   useEffect(() => {
     const fetchBorrows = async () => {
       try {
-        const response = await fetch('https://https://library-pro-backend-production.up.railway.app/borrows')
+        const response = await fetch('https://library-pro-backend-production.up.railway.app/borrows')
         if (!response.ok) throw new Error('ধারের লিস্ট লোড করতে সমস্যা')
         const data = await response.json()
         // শুধু active ধার দেখাবো (যেগুলো এখনো ফেরত দেওয়া হয়নি)
@@ -34,7 +34,7 @@ export default function ReturnPage() {
 
   const handleReturn = async (borrowId) => {
     try {
-      const response = await fetch(`https://https://library-pro-backend-production.up.railway.app/return/${borrowId}`, {
+      const response = await fetch(`https://library-pro-backend-production.up.railway.app/return/${borrowId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' }
       })
@@ -47,7 +47,7 @@ export default function ReturnPage() {
       toast.success("সফল!", { description: "বই ফেরত দেওয়া হয়েছে" })
 
       // লিস্ট রিফ্রেশ
-      const updatedBorrows = await fetch('https://https://library-pro-backend-production.up.railway.app/borrows').then(res => res.json())
+      const updatedBorrows = await fetch('https://library-pro-backend-production.up.railway.app/borrows').then(res => res.json())
       const active = updatedBorrows.filter(b => b.status === 'active')
       setBorrows(active)
     } catch (err) {
