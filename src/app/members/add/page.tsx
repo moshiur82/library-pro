@@ -25,7 +25,7 @@ export default function AddMemberPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/members', {
+      const response = await fetch('http://https://library-pro-backend-production.up.railway.app/members', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, address })

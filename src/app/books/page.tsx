@@ -27,7 +27,7 @@ export default function BooksPage() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://localhost:5000/books')
+        const response = await fetch('http://https://library-pro-backend-production.up.railway.app/books')
         if (!response.ok) {
           throw new Error('বই লিস্ট লোড করতে সমস্যা হয়েছে')
         }

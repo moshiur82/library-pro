@@ -25,7 +25,7 @@ export default function BorrowsPage() {
   useEffect(() => {
     const fetchBorrows = async () => {
       try {
-        const response = await fetch('http://localhost:5000/borrows')
+        const response = await fetch('http://https://library-pro-backend-production.up.railway.app/borrows')
         if (!response.ok) {
           throw new Error('ধারের লিস্ট লোড করতে সমস্যা হয়েছে')
         }
@@ -49,7 +49,7 @@ export default function BorrowsPage() {
 
   const handleReturn = async (borrowId: number) => {
     try {
-      const response = await fetch(`http://localhost:5000/return/${borrowId}`, {
+      const response = await fetch(`http://https://library-pro-backend-production.up.railway.app/return/${borrowId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' }
       })
@@ -62,7 +62,7 @@ export default function BorrowsPage() {
       toast.success("সফল!", { description: "বই ফেরত দেওয়া হয়েছে" })
 
       // লিস্ট রিফ্রেশ করো
-      const updatedResponse = await fetch('http://localhost:5000/borrows')
+      const updatedResponse = await fetch('http://https://library-pro-backend-production.up.railway.app/borrows')
       if (!updatedResponse.ok) {
         throw new Error('লিস্ট রিফ্রেশ করতে সমস্যা')
       }
